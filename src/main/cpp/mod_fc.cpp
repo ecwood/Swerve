@@ -14,10 +14,9 @@ int ModFC::CurrentPosition(){
 	if (clockwise_motor < 0){
 		pos = pos * -1;
 	}
-
 	int inRotPos = pos % encPerRev;
-	if (clockwise_motor < 0 && inRotPos < 0) inRotPos = inRotPos + 360;
-
+	if (clockwise_motor < 0 && inRotPos < 0) inRotPos = inRotPos + encPerRev;
+	//Must add encPerRev not 360 because working with encoder counts not degrees
 	return inRotPos;
 }
 
@@ -104,10 +103,4 @@ int ModFC::DegreesToRotateRange(int velocity){
 	- Have a separate function to do the wheel rotation countaract to the module rotation
 	- One rotation of module = 1/2 rotation of wheel
 	-
-
-
-	Big issue that it can turn clockwise just fine and counterclockwise most times. However, 
-	if you want to start by turning counterclockwse (without turning clockwise first), it
-	breaks.
-
 */
