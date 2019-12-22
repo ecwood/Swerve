@@ -2,6 +2,7 @@
 #define PI 3.1415
 
 int JoystickAnalysis::GetJoystickDegrees(){
+	if (EnableZeroStart(zero_start_on)) return 0;
 	float y_axis = -1 * joystick->GetRawAxis(1);
 	float x_axis = joystick->GetRawAxis(0);
 
@@ -22,18 +23,25 @@ float JoystickAnalysis::GetJoystickRadians(){
 float JoystickAnalysis::GetJoystickMagnitude(){
 	float y_axis = -1 * joystick->GetRawAxis(1);
 	float x_axis = joystick->GetRawAxis(0);
-
 	float sqr = sqrt(pow(y_axis, 2) + pow(x_axis, 2));
 	int dir = 1;
-	if (GetJoystickDegrees() < 270 && GetJoystickDegrees() > 90) dir = -1;
+	if (x_axis < 0) dir = -1;
 	if (sqr > 1) return 1 * dir;
 	return sqr * dir;
 }
 
 float JoystickAnalysis::Velocity(int max_velocity){
+	this->max_velocity = max_velocity;
 	float mag = GetJoystickMagnitude();
 	if (abs(mag) < radiusOfNoEffect) return 0;
 	return mag * max_velocity;
+}
+
+bool JoystickAnalysis::EnableZeroStart(bool on){
+	zero_check = zero_check + abs(GetJoystickMagnitude());
+	zero_start_on = on;
+	if (zero_check < RadiusOfNoEffect() * max_velocity && on) return true;
+	else return false;
 }
 		
 int JoystickAnalysis::GetJoystickRegion(){

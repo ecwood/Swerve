@@ -62,6 +62,7 @@ void ModFC::Rotate(int velocity, std::string name){
 		int target = PositionToRotate();
 		if (target < 0){
 			//talon_rotate->Set(ControlMode::Velocity, DegreesToRotateRange(-velocity));
+			std::cout<<"Clockwise"<<std::endl;
 			if (abs(DegreesToRotate()) >= 15){
 				talon_rotate->Set(ControlMode::Velocity, -velocity);
 			}
@@ -72,6 +73,7 @@ void ModFC::Rotate(int velocity, std::string name){
 		else {
 			//Wheel rotates clockwise
 			//std::cout<<"Sub: "<<pos - target<<std::endl;
+			std::cout<<"Counter Clockwise"<<std::endl;
 			if (abs(DegreesToRotate()) >= 15){
 				talon_rotate->Set(ControlMode::Velocity, velocity);
 			}
@@ -85,12 +87,8 @@ void ModFC::Rotate(int velocity, std::string name){
 		talon_rotate->Set(ControlMode::PercentOutput, 0);
 	}
 
-	//std::cout<<name<<" Position: "<<CurrentPosition()<<std::endl;
-	std::cout<<name<<" DegreesToRotate Range: "<<DegreesToRotateRange(velocity)<<std::endl;
+	//std::cout<<name<<" DegreesToRotate Range: "<<DegreesToRotateRange(velocity)<<std::endl;
 	std::cout<<name<<" Current Degrees: "<<CurrentDegrees()<<std::endl;
-	//std::cout<<name<<" Degrees to Rotate: "<<DegreesToRotate()<<std::endl;
-	//std::cout<<name<<" Position to Go: "<<PositionToRotate()<<std::endl;
-	std::cout<<"\t"<<name<<" Position: "<<talon_rotate->GetSelectedSensorPosition(0)<<std::endl;
 }
 
 int ModFC::DegreesToRotateRange(int velocity){
@@ -106,5 +104,10 @@ int ModFC::DegreesToRotateRange(int velocity){
 	- Have a separate function to do the wheel rotation countaract to the module rotation
 	- One rotation of module = 1/2 rotation of wheel
 	-
+
+
+	Big issue that it can turn clockwise just fine and counterclockwise most times. However, 
+	if you want to start by turning counterclockwse (without turning clockwise first), it
+	breaks.
 
 */

@@ -21,11 +21,16 @@ class JoystickAnalysis {
 		int GetJoystickRegion();
 
 		float RadiusOfNoEffect();
+		bool EnableZeroStart(bool on);
 
 	private:
 		TalonSRX *talon_rotate, *talon_wheel;
 		Joystick *joystick;
 		const float radiusOfNoEffect = 0.1;
+
+		bool zero_start_on;
+		int zero_check;
+		int max_velocity;
 };
 
 #endif
